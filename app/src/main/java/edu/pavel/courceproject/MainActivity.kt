@@ -9,13 +9,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
+        setContentView(TestView(this))
 
-        val but = findViewById<Button>(R.id.button)
-
-        but.setOnClickListener { v ->
-            val tView = findViewById<TextView>(R.id.textView)
-            tView.text = "New text!"
-        }
+//        val but = findViewById<Button>(R.id.button)
+//
+//        but.setOnClickListener { v ->
+//            val tView = findViewById<TextView>(R.id.textView)
+//            tView.text = "New text!"
+//        }
     }
 }
