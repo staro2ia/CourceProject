@@ -1,5 +1,6 @@
 package edu.pavel.courceproject
 
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +20,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val table = findViewById<TableLayout>(R.id.tableMain)
+
+        doAsync {
+            val apiResponse = (URL("https://ghibliapi.herokuapp.com/#tag/Films").readText())
+
+            println(apiResponse)
+        }
 
         countRow += 5
 
