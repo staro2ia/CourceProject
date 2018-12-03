@@ -1,89 +1,84 @@
 package edu.pavel.courceproject
 
+import android.graphics.Color
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.Loader
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import kotlinx.serialization.json.JSON
 import kotlinx.serialization.*
+import org.jetbrains.anko.*
 import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
     private var countRow = 0
-    private var films: List<Film> = listOf()
+//    private var films: List<Film> = listOf()
+
+    private lateinit var listData : ListView
+    private lateinit var adapter: MyFilmsAdapter
+
 //    private var films: MutableList<Film> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val table = findViewById<TableLayout>(R.id.tableMain)
+        listData = findViewById(R.id.listData)
 
-        async {
-            val apiResponse: String = URL("https://ghibliapi.herokuapp.com/films").readText()
+        longToast("Getting new data...")
 
-            val testFilmString = """
- {
- "id": "2baf70d1-42bb-4437-b551-e5fed5a87abe",
- "title": "Castle in the Sky",
- "description": "The orphan Sheeta inherited a mysterious crystal that links her to the mythical sky-kingdom of Laputa. With the help of resourceful Pazu and a rollicking band of sky pirates, she makes her way to the ruins of the once-great civilization. Sheeta and Pazu must outwit the evil Muska, who plans to use Laputa's science to make himself ruler of the world.",
- "director": "Hayao Miyazaki",
- "producer": "Isao Takahata",
- "release_date": "1986",
- "rt_score": "95",
- "people": [
- "https://ghibliapi.herokuapp.com/people/"
- ],
- "species": [
- "https://ghibliapi.herokuapp.com/species/af3910a6-429f-4c74-9ad5-dfe1c4aa04f2"
- ],
- "locations": [
- "https://ghibliapi.herokuapp.com/locations/"
- ],
- "vehicles": [
- "https://ghibliapi.herokuapp.com/vehicles/"
- ],
- "url": "https://ghibliapi.herokuapp.com/films/2baf70d1-42bb-4437-b551-e5fed5a87abe"
- }
- """
+//  TODO Async load data and polute ListView
+        async(CommonPool) {
 
-            println("Start parse apiResponse")
+            val films = loadData()
 
-//            films = JSON.parse(apiResponse)
+            adapter = MyFilmsAdapter(applicationContext, films)
 
-            val film = JSON.parse< Film >(apiResponse)
-//            val gson = Gson()
-//            films = gson.fromJson(apiResponse, object : TypeToken<List<Film>>() {}.type)
+//        val array = listOf("Tets 1", "Test 2", "Test 3")
 
-            println("Films list?")
-//            println(films.size)
-            println(film)
+//        listData.adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, array)
+//            listData.backgroundColor = Color.parseColor("#0000FF")
+            preparePost{
+
+          println("Put data in UI")
+            listData.adapter = adapter
+            }
         }
 
-
-        countRow += 5
-
-        for (i in 0 until countRow) {
-            val row = TableRow(this)
-            row.layoutParams =
-                    TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-
-            val text = TextView(this)
-            text.text = i.toString()
-
-            row.addView(text, 0)
-
-            table.addView(row, i)
-        }
 
     }
+
+     private  fun loadData(): List<Film> {
+        val apiResponse: String = URL("https://ghibliapi.herokuapp.com/films").readText()
+
+        println("Start parse apiResponse")
+
+        val gson = Gson()
+        val films: List<Film>  = gson.fromJson(apiResponse, object : TypeToken<List<Film>>() {}.type)
+
+        println("Films list size = ${films.size}")
+        println ("End parse apiResponse")
+
+        return films
+    }
+
+    private fun arrayTitle(films: List<Film>): List<String> {
+        var list = mutableListOf<String>()
+
+        for ( film in films) {
+            list.add(film.title)
+        }
+
+        return list
+    }
+
+
 }
