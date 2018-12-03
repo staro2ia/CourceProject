@@ -7,14 +7,10 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <TableLayout
-        android:id="@+id/tableMain"
-        android:layout_width="344dp"
-        android:layout_height="495dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </TableLayout>
+    <ListView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/listData"/>
 </android.support.constraint.ConstraintLayout>
