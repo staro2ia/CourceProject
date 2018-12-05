@@ -35,7 +35,8 @@ class MyFilmsAdapter (context: Context, list: List<Film>)
         val film = getItem(position)!!
         println("$film")
 
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.test_data_row, parent)
+        val view = convertView ?:
+            LayoutInflater.from(context).inflate(R.layout.test_data_row, parent)
         view.findViewById<TextView>(R.id.textViewFilm).text = film.title
 
         println ("In film $position Title ${film.title} ")

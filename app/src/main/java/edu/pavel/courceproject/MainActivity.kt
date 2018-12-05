@@ -46,10 +46,10 @@ class MainActivity : AppCompatActivity() {
 
 //        listData.adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, array)
 //            listData.backgroundColor = Color.parseColor("#0000FF")
-            preparePost{
-
-          println("Put data in UI")
-            listData.adapter = adapter
+            runOnUiThread{
+                println("Put data in UI")
+                listData.adapter = adapter
+//                adapter.notifyDataSetChanged()
             }
         }
 
