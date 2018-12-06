@@ -33,27 +33,16 @@ class MainActivity : AppCompatActivity() {
 
         listData = findViewById(R.id.listData)
 
-        longToast("Getting new data...")
-
 //  TODO Async load data and polute ListView
         async(CommonPool) {
-
             val films = loadData()
 
             adapter = MyFilmsAdapter(applicationContext, films)
 
-//        val array = listOf("Tets 1", "Test 2", "Test 3")
-
-//        listData.adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, array)
-//            listData.backgroundColor = Color.parseColor("#0000FF")
-            preparePost{
-
-          println("Put data in UI")
-            listData.adapter = adapter
+            runOnUiThread {
+                listData.adapter = adapter
             }
         }
-
-
     }
 
      private  fun loadData(): List<Film> {
