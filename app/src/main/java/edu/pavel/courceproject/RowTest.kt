@@ -24,19 +24,16 @@ data class Film (
     val locations: List<String>,
     val vehicles: List<String>,
     val url: String
-
 )
 
 class MyFilmsAdapter (context: Context, list: List<Film>)
     : ArrayAdapter<Film>(context, R.layout.test_data_row, list) {
 
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val film = getItem(position)!!
         println("$film")
 
-        val view = convertView ?:
-            LayoutInflater.from(context).inflate(R.layout.test_data_row, parent)
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.test_data_row, parent, false)
         view.findViewById<TextView>(R.id.textViewFilm).text = film.title
 
         println ("In film $position Title ${film.title} ")

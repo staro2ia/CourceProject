@@ -19,13 +19,8 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-    private var countRow = 0
-//    private var films: List<Film> = listOf()
-
     private lateinit var listData : ListView
     private lateinit var adapter: MyFilmsAdapter
-
-//    private var films: MutableList<Film> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,25 +30,16 @@ class MainActivity : AppCompatActivity() {
 
         longToast("Getting new data...")
 
-//  TODO Async load data and polute ListView
-        async(CommonPool) {
-
+         async(CommonPool) {
             val films = loadData()
 
             adapter = MyFilmsAdapter(applicationContext, films)
 
-//        val array = listOf("Tets 1", "Test 2", "Test 3")
-
-//        listData.adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, array)
-//            listData.backgroundColor = Color.parseColor("#0000FF")
             runOnUiThread{
                 println("Put data in UI")
                 listData.adapter = adapter
-//                adapter.notifyDataSetChanged()
             }
         }
-
-
     }
 
      private  fun loadData(): List<Film> {
@@ -71,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun arrayTitle(films: List<Film>): List<String> {
-        var list = mutableListOf<String>()
+        val list = mutableListOf<String>()
 
         for ( film in films) {
             list.add(film.title)
