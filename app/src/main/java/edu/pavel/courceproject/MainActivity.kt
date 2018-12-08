@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        listData = findViewById(R.id.listData)
+        listData = this.findViewById(R.id.listData)
 
         longToast("Getting new data...")
 
@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+//TODO: Add load data for other request.
+//TODO: Add detail activity for films.
+//TODO: Add feature for save data in local DB.
 
      private  fun loadData(): List<Film> {
         val apiResponse: String = URL("https://ghibliapi.herokuapp.com/films").readText()

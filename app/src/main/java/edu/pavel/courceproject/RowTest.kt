@@ -26,6 +26,11 @@ data class Film (
     val url: String
 )
 
+//TODO: Make beautiful list row.
+//TODO: Add important field to row.
+
+
+
 class MyFilmsAdapter (context: Context, list: List<Film>)
     : ArrayAdapter<Film>(context, R.layout.test_data_row, list) {
 
