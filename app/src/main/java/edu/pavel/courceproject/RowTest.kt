@@ -62,7 +62,7 @@ class FilmsTable {
     /**
      * @brief Enumeration for columns of Films table.
      */
-    enum class Columns (val string: String, val num: Int) {
+    enum class Columns (val string: String, val number: Int) {
         id ("ID", 0),
         title ("Title", 1),
         description ("Description", 2),
@@ -114,11 +114,8 @@ class FilmsTable {
             null, null, null)
 
         mCursor.moveToFirst()
-        val TeamHome = mCursor.getString(NUM_COLUMN_TEAMHOME)
-        val TeamGuest = mCursor.getString(NUM_COLUMN_TEAMGUAST)
-        val GoalsHome = mCursor.getInt(NUM_COLUMN_GOALSHOME)
-        val GoalsGuest = mCursor.getInt(NUM_COLUMN_GOALSGUEST)
-        return Film(id, TeamHome, TeamGuest, GoalsHome, GoalsGuest)
+        val title = mCursor.getString(Columns.title.number)
+        return Film(id, title )
         TODO ("not implemented")
     }
 
@@ -127,14 +124,12 @@ class FilmsTable {
 
         val arr = ArrayList<Film>()
         mCursor.moveToFirst()
-        if (!mCursor.isAfterLast()) {
+        if (!mCursor.isAfterLast) {
             do {
-                val id = mCursor.getLong(NUM_COLUMN_ID)
-                val TeamHome = mCursor.getString(NUM_COLUMN_TEAMHOME)
-                val TeamGuest = mCursor.getString(NUM_COLUMN_TEAMGUAST)
-                val GoalsHome = mCursor.getInt(NUM_COLUMN_GOALSHOME)
-                val GoalsGuest = mCursor.getInt(NUM_COLUMN_GOALSGUEST)
-                arr.add(Film(id, TeamHome, TeamGuest, GoalsHome, GoalsGuest))
+                val id = mCursor.getString(Columns.id.number)
+                val title = mCursor.getString(Columns.title.number)
+
+                arr.add(Film(id, title))
             } while (mCursor.moveToNext())
         }
         return arr
