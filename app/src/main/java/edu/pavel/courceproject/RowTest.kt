@@ -88,7 +88,7 @@ class FilmsTable {
         val cv = ContentValues()
         cv.put(Columns.id.string, x.id)
         return db.insert(tableName, null, cv)
-//TODO ("not implemented")
+        TODO ("not implemented")
     }
 
     fun update(x: Film): Int {
@@ -108,7 +108,7 @@ class FilmsTable {
         TODO ("not implemented")
     }
 
-    fun select(id: Long): Film {
+    fun select(id: String): Film {
         val mCursor = db.query(tableName, null,
             " '${Columns.id.string}' = ? ", arrayOf(id.toString()),
             null, null, null)
