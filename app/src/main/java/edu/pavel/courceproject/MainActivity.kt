@@ -25,20 +25,13 @@ class MainActivity : AppCompatActivity() {
         println("Start async")
 
         async(CommonPool) {
-            println("DB connection...")
             filmsTable = FilmsTable(applicationContext)
-            println("End connection...")
 
-            println("Start load data")
             loadData(filmsTable)
-            println("End load data")
 
             val films = filmsTable.selectAll()
 
-            println("Films's size selected from bd = ${films.size}")
-
             adapter = MyFilmsAdapter(applicationContext, films)
-
 
             runOnUiThread {
                 listData.adapter = adapter
@@ -57,13 +50,9 @@ class MainActivity : AppCompatActivity() {
 
         val apiResponse: String = URL("https://ghibliapi.herokuapp.com/films").readText()
 
-//        println("Start parse apiResponse")
-
         val gson = Gson()
         val films: List<Film> = gson.fromJson(apiResponse, object : TypeToken<List<Film>>() {}.type)
 
-//        println("Films list size = ${films.size}")
-//        println("End parse apiResponse")
 
         for (film in films) {
             filmsTable.insert(film)
