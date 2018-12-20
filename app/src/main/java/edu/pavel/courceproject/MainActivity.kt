@@ -1,26 +1,20 @@
 package edu.pavel.courceproject
 
-import android.graphics.Color
-import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.Loader
-import android.view.ViewGroup
-import android.widget.*
+import android.support.v7.app.AppCompatActivity
+import android.widget.ListView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
-import kotlinx.serialization.json.JSON
-import kotlinx.serialization.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.longToast
 import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var listData : ListView
+    private lateinit var listData: ListView
     private lateinit var adapter: MyFilmsAdapter
+    private lateinit var filmsTable: FilmsTable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,42 +22,59 @@ class MainActivity : AppCompatActivity() {
 
         listData = this.findViewById(R.id.listData)
 
-        longToast("Getting new data...")
+        println("Start async")
 
-         async(CommonPool) {
-            val films = loadData()
+        async(CommonPool) {
+            println("DB connection...")
+            filmsTable = FilmsTable(applicationContext)
+            println("End connection...")
+
+            println("Start load data")
+            loadData(filmsTable)
+            println("End load data")
+
+            val films = filmsTable.selectAll()
+
+            println("Films's size selected from bd = ${films.size}")
 
             adapter = MyFilmsAdapter(applicationContext, films)
 
-            runOnUiThread{
-                println("Put data in UI")
+
+            runOnUiThread {
                 listData.adapter = adapter
             }
         }
+
+        println("End async")
     }
 
 //TODO: Add load data for other request.
 //TODO: Add detail activity for films.
 //TODO: Add feature for save data in local DB.
 
-     private  fun loadData(): List<Film> {
+    private fun loadData(filmsTable: FilmsTable) {
+//        TODO("For db add feature filling the db from loaded data")
+
         val apiResponse: String = URL("https://ghibliapi.herokuapp.com/films").readText()
 
-        println("Start parse apiResponse")
+//        println("Start parse apiResponse")
 
         val gson = Gson()
-        val films: List<Film>  = gson.fromJson(apiResponse, object : TypeToken<List<Film>>() {}.type)
+        val films: List<Film> = gson.fromJson(apiResponse, object : TypeToken<List<Film>>() {}.type)
 
-        println("Films list size = ${films.size}")
-        println ("End parse apiResponse")
+//        println("Films list size = ${films.size}")
+//        println("End parse apiResponse")
 
-        return films
+        for (film in films) {
+            filmsTable.insert(film)
+        }
+
     }
 
     private fun arrayTitle(films: List<Film>): List<String> {
         val list = mutableListOf<String>()
 
-        for ( film in films) {
+        for (film in films) {
             list.add(film.title)
         }
 

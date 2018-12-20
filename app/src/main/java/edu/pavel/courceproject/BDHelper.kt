@@ -17,6 +17,8 @@ import android.database.sqlite.SQLiteOpenHelper
 class DBHelper(context: Context): SQLiteOpenHelper(context, dbName, null, dbVersion){
 
     override fun onCreate(db: SQLiteDatabase?) {
+
+        println("Start DBHelper::onCreate")
         val query = """
 CREATE TABLE IF NOT EXISTS `Vehicles` (
 	`ID`	TEXT NOT NULL UNIQUE,
@@ -61,7 +63,8 @@ CREATE TABLE IF NOT EXISTS `Films` (
 
         db?.execSQL(query)
 
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("End DBHelper::onCreate")
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

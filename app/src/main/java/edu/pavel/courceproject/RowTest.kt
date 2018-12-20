@@ -77,63 +77,106 @@ class FilmsTable {
         url ("URL", 11)
     }
 
-    val  db: SQLiteDatabase
+    /**
+     * @brief
+     */
+    private val  db: SQLiteDatabase
 
     constructor(context: Context) {
+        println("Start FilmsTable::constructor")
         val dbHelper = DBHelper(context)
         db = dbHelper.writableDatabase
+        println("End FilmsTable::constructor")
     }
 
-    fun insert(x: Film): Long {
+    fun insert(film: Film): Long {
         val cv = ContentValues()
-        cv.put(Columns.id.string, x.id)
+        cv.put(Columns.id.string, film.id)
+        cv.put(Columns.title.string, film.title)
+        cv.put(Columns.description.string, film.description)
+        cv.put(Columns.director.string, film.director)
+        cv.put(Columns.producer.string, film.producer)
+        cv.put(Columns.release_date.string, film.release_date)
+        cv.put(Columns.rt_score.string, film.rt_score)
+//        cv.put(Columns.people.string, film.people)
+//        cv.put(Columns.species.string, film.species)
+//        cv.put(Columns.locations.string, film.locations)
+//        cv.put(Columns.vehicles.string, film.vehicles)
+        cv.put(Columns.url.string, film.url)
+
+
         return db.insert(tableName, null, cv)
-        TODO ("not implemented")
+//        TODO ("not implemented")
     }
 
-    fun update(x: Film): Int {
-        val cv = ContentValues()
-        cv.put(Columns.title.string, x.title)
-        return db.update(tableName, cv, " '${Columns.id.string}' = ? ", arrayOf<String>(x.id))
-        TODO ("not implemented")
-    }
-
-    fun deleteAll() {
-        db.delete(tableName, null, null)
-        TODO ("not implemented")
-    }
-
-    fun delete(id: Long) {
-        db.delete(tableName, " '${Columns.id.string}' = ? ", arrayOf(id.toString()))
-        TODO ("not implemented")
-    }
+//    fun update(x: Film): Int {
+//        val cv = ContentValues()
+//        cv.put(Columns.title.string, x.title)
+//        return db.update(tableName, cv, " '${Columns.id.string}' = ? ", arrayOf<String>(x.id))
+//        TODO ("not implemented")
+//    }
+//
+//    fun deleteAll() {
+//        db.delete(tableName, null, null)
+//        TODO ("not implemented")
+//    }
+//
+//    fun delete(id: Long) {
+//        db.delete(tableName, " '${Columns.id.string}' = ? ", arrayOf(id.toString()))
+//        TODO ("not implemented")
+//    }
 
     fun select(id: String): Film {
-        val mCursor = db.query(tableName, null,
-            " '${Columns.id.string}' = ? ", arrayOf(id.toString()),
+        val cursor = db.query(tableName, null,
+            " '${Columns.id.string}' = ? ", arrayOf(id),
             null, null, null)
 
-        mCursor.moveToFirst()
-        val title = mCursor.getString(Columns.title.number)
-        return Film(id, title )
-        TODO ("not implemented")
+        cursor.moveToFirst()
+        val title = cursor.getString(Columns.title.number)
+        val description = cursor.getString(Columns.description.number)
+        val director = cursor.getString(Columns.director.number)
+        val producer = cursor.getString(Columns.producer.number)
+        val release_date = cursor.getString(Columns.release_date.number)
+        val rt_score = cursor.getString(Columns.rt_score.number)
+        val people = cursor.getString(Columns.people.number)
+        val species = cursor.getString(Columns.species.number)
+        val locations = cursor.getString(Columns.locations.number)
+        val vehicles = cursor.getString(Columns.locations.number)
+        val url = cursor.getString(Columns.url.number)
+
+        return Film(id, title, description, director, producer, release_date, rt_score,
+            listOf(), listOf(), listOf(), listOf(),
+            url)
     }
 
+
     fun selectAll(): ArrayList<Film> {
-        val mCursor = db.query(tableName, null, null, null, null, null, null)
+        val cursor = db.query(tableName, null, null, null, null, null, null)
 
         val arr = ArrayList<Film>()
-        mCursor.moveToFirst()
-        if (!mCursor.isAfterLast) {
+        cursor.moveToFirst()
+        if (!cursor.isAfterLast) {
             do {
-                val id = mCursor.getString(Columns.id.number)
-                val title = mCursor.getString(Columns.title.number)
+                val id = cursor.getString(Columns.id.number)
+                val title = cursor.getString(Columns.title.number)
+                val description = cursor.getString(Columns.description.number)
+                val director = cursor.getString(Columns.director.number)
+                val producer = cursor.getString(Columns.producer.number)
+                val release_date = cursor.getString(Columns.release_date.number)
+                val rt_score = cursor.getString(Columns.rt_score.number)
+                val people = cursor.getString(Columns.people.number)
+                val species = cursor.getString(Columns.species.number)
+                val locations = cursor.getString(Columns.locations.number)
+                val vehicles = cursor.getString(Columns.locations.number)
+                val url = cursor.getString(Columns.url.number)
 
-                arr.add(Film(id, title))
-            } while (mCursor.moveToNext())
+                arr.add(Film(id, title, description, director, producer, release_date, rt_score,
+                    listOf(), listOf(), listOf(), listOf(),
+                    url))
+            } while (cursor.moveToNext())
         }
         return arr
-        TODO ("not implemented")
+//        TODO ("not implemented")
     }
 
 }
