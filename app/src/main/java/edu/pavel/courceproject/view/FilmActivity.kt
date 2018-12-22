@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView
 import edu.pavel.courceproject.R
 import edu.pavel.courceproject.model.Film
+import edu.pavel.courceproject.model.FilmsTable
 
 import kotlinx.android.synthetic.main.activity_film.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FilmActivity : AppCompatActivity() {
 
@@ -23,27 +26,43 @@ class FilmActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        val title = intent.extras.getString(EXTRA_TITLE)
-        val url = intent.extras.getString(EXTRA_URL)
 
-        setTitle(title)
+        val id = intent.extras.getString(FilmsTable.Columns.id.string)
 
-        val textViewTitle = findViewById<TextView>(R.id.textViewTitle)
+        var film: Film
+        var filmsTable: FilmsTable
 
-        textViewTitle.text = title
+        GlobalScope.launch {
+            filmsTable = FilmsTable(this@FilmActivity)
+
+
+
+            film = filmsTable.select(id)
+
+            runOnUiThread {
+                val title = film.title
+                val url = film.url
+
+                setTitle(title)
+
+                val textViewTitle = findViewById<TextView>(R.id.textViewTitle)
+
+                textViewTitle.text = title
+            }
+        }
+
+
 
 
     }
 
 
     companion object {
-        const val EXTRA_TITLE = "title"
-        const val EXTRA_URL = "url"
 
         fun newIntent(context: Context, film: Film): Intent {
             val detailIntent = Intent(context, FilmActivity::class.java)
 
-            detailIntent.putExtra(EXTRA_TITLE, film.title)
+            detailIntent.putExtra(FilmsTable.Columns.id.string, film.id)
 
             return detailIntent
         }

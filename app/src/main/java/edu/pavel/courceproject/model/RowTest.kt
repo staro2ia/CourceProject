@@ -16,7 +16,7 @@ import java.util.ArrayList
 
 
 //@Serializable
-data class Film (
+data class Film(
     val id: String,
     val title: String,
     val description: String,
@@ -37,8 +37,7 @@ data class Film (
 /**
  * @brief Adapter for ListView of Film
  */
-class MyFilmsAdapter (context: Context, list: List<Film>)
-    : ArrayAdapter<Film>(context, R.layout.test_data_row, list) {
+class MyFilmsAdapter(context: Context, list: List<Film>) : ArrayAdapter<Film>(context, R.layout.test_data_row, list) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val film = getItem(position)!!
@@ -53,8 +52,9 @@ class MyFilmsAdapter (context: Context, list: List<Film>)
 
 }
 
+
 /**
- * @brief
+ * @brief The class table of films.
  */
 class FilmsTable {
     companion object {
@@ -85,25 +85,25 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
     /**
      * @brief Enumeration for columns of Films table.
      */
-    enum class Columns (val string: String, val number: Int) {
-        id ("ID", 0),
-        title ("Title", 1),
-        description ("Description", 2),
-        director ("Director", 3),
-        producer ("Producer", 4),
-        release_date ("Release_date", 5),
-        rt_score ("RT_score", 6),
-        people ("People", 7),
-        species ("Species", 8),
-        locations ("Locations", 9),
-        vehicles ("Vehicles", 10),
-        url ("URL", 11)
+    enum class Columns(val string: String, val number: Int) {
+        id("ID", 0),
+        title("Title", 1),
+        description("Description", 2),
+        director("Director", 3),
+        producer("Producer", 4),
+        release_date("Release_date", 5),
+        rt_score("RT_score", 6),
+        people("People", 7),
+        species("Species", 8),
+        locations("Locations", 9),
+        vehicles("Vehicles", 10),
+        url("URL", 11)
     }
 
     /**
      * @brief
      */
-    private val  db: SQLiteDatabase
+    private val db: SQLiteDatabase
 
     constructor(context: Context) {
         val dbHelper = DBHelper(context)
@@ -150,10 +150,12 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
     fun select(id: String): Film {
         val cursor = db.query(
             tableName, null,
-            " '${Columns.id.string}' = ? ", arrayOf(id),
-            null, null, null)
+            " ${Columns.id.string} = ? ", arrayOf(id),
+            null, null, null
+        )
 
         cursor.moveToFirst()
+
         val title = cursor.getString(Columns.title.number)
         val description = cursor.getString(Columns.description.number)
         val director = cursor.getString(Columns.director.number)

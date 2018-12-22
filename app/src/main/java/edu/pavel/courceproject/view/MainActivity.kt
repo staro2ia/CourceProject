@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         listData = this.findViewById(R.id.listData)
 
         GlobalScope.launch {
-            filmsTable = FilmsTable(applicationContext)
+            filmsTable = FilmsTable(this@MainActivity)
 
             loadData(filmsTable)
 
