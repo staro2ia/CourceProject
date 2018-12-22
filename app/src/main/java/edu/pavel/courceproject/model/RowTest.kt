@@ -1,18 +1,21 @@
-package edu.pavel.courceproject
+package edu.pavel.courceproject.model
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.support.annotation.RestrictTo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import kotlinx.serialization.*
+import edu.pavel.courceproject.R
+import org.jetbrains.anko.sdk27.coroutines.onClick
+//import kotlinx.serialization.*
 import java.util.ArrayList
 
 
-@Serializable
+//@Serializable
 data class Film (
     val id: String,
     val title: String,
@@ -41,11 +44,12 @@ class MyFilmsAdapter (context: Context, list: List<Film>)
         val film = getItem(position)!!
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.test_data_row, parent, false)
         view.findViewById<TextView>(R.id.textViewFilm).text = film.title
-
-        println ("In film $position Title ${film.title} ")
+        view.findViewById<TextView>(R.id.textViewYear).text = film.release_date
+        view.findViewById<TextView>(R.id.textViewRTScore).text = film.rt_score
 
         return view
     }
+
 
 }
 
@@ -56,24 +60,24 @@ class FilmsTable {
     companion object {
         const val tableName = "Films"
         val queryCreateTable = """
-CREATE TABLE IF NOT EXISTS '${FilmsTable.tableName}' (
-	'${FilmsTable.Columns.id.string}'	TEXT NOT NULL UNIQUE,
-	'${FilmsTable.Columns.title.string}'	TEXT NOT NULL,
-	'${FilmsTable.Columns.description.string}'	TEXT,
-	'${FilmsTable.Columns.director.string}'	TEXT NOT NULL,
-	'${FilmsTable.Columns.producer.string}'	TEXT NOT NULL,
-	'${FilmsTable.Columns.release_date.string}'	TEXT,
-	'${FilmsTable.Columns.rt_score.string}'	TEXT,
-	'${FilmsTable.Columns.people.string}'	TEXT,
-	'${FilmsTable.Columns.species.string}'	TEXT,
-	'${FilmsTable.Columns.locations.string}'	TEXT,
-	'${FilmsTable.Columns.vehicles.string}'	TEXT,
-	'${FilmsTable.Columns.url.string}'	TEXT NOT NULL,
-	PRIMARY KEY('${FilmsTable.Columns.id.string}'),
-    FOREIGN KEY('${FilmsTable.Columns.people.string}') REFERENCES 'People'('ID'),
-	FOREIGN KEY('${FilmsTable.Columns.species.string}') REFERENCES 'Species'('ID'),
-	FOREIGN KEY('${FilmsTable.Columns.locations.string}') REFERENCES 'Locations'('ID'),
-	FOREIGN KEY('${FilmsTable.Columns.vehicles.string}') REFERENCES 'Vehicles'('ID')
+CREATE TABLE IF NOT EXISTS '$tableName' (
+	'${Columns.id.string}'	TEXT NOT NULL UNIQUE,
+	'${Columns.title.string}'	TEXT NOT NULL,
+	'${Columns.description.string}'	TEXT,
+	'${Columns.director.string}'	TEXT NOT NULL,
+	'${Columns.producer.string}'	TEXT NOT NULL,
+	'${Columns.release_date.string}'	TEXT,
+	'${Columns.rt_score.string}'	TEXT,
+	'${Columns.people.string}'	TEXT,
+	'${Columns.species.string}'	TEXT,
+	'${Columns.locations.string}'	TEXT,
+	'${Columns.vehicles.string}'	TEXT,
+	'${Columns.url.string}'	TEXT NOT NULL,
+	PRIMARY KEY('${Columns.id.string}'),
+    FOREIGN KEY('${Columns.people.string}') REFERENCES 'People'('ID'),
+	FOREIGN KEY('${Columns.species.string}') REFERENCES 'Species'('ID'),
+	FOREIGN KEY('${Columns.locations.string}') REFERENCES 'Locations'('ID'),
+	FOREIGN KEY('${Columns.vehicles.string}') REFERENCES 'Vehicles'('ID')
 );
         """.trimIndent()
     }
@@ -144,7 +148,8 @@ CREATE TABLE IF NOT EXISTS '${FilmsTable.tableName}' (
 //    }
 
     fun select(id: String): Film {
-        val cursor = db.query(tableName, null,
+        val cursor = db.query(
+            tableName, null,
             " '${Columns.id.string}' = ? ", arrayOf(id),
             null, null, null)
 
@@ -161,9 +166,11 @@ CREATE TABLE IF NOT EXISTS '${FilmsTable.tableName}' (
         val vehicles = cursor.getString(Columns.locations.number)
         val url = cursor.getString(Columns.url.number)
 
-        return Film(id, title, description, director, producer, release_date, rt_score,
+        return Film(
+            id, title, description, director, producer, release_date, rt_score,
             listOf(), listOf(), listOf(), listOf(),
-            url)
+            url
+        )
     }
 
 
@@ -187,9 +194,13 @@ CREATE TABLE IF NOT EXISTS '${FilmsTable.tableName}' (
                 val vehicles = cursor.getString(Columns.locations.number)
                 val url = cursor.getString(Columns.url.number)
 
-                arr.add(Film(id, title, description, director, producer, release_date, rt_score,
-                    listOf(), listOf(), listOf(), listOf(),
-                    url))
+                arr.add(
+                    Film(
+                        id, title, description, director, producer, release_date, rt_score,
+                        listOf(), listOf(), listOf(), listOf(),
+                        url
+                    )
+                )
             } while (cursor.moveToNext())
         }
         return arr

@@ -1,4 +1,4 @@
-package edu.pavel.courceproject
+package edu.pavel.courceproject.model
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -14,7 +14,10 @@ import android.database.sqlite.SQLiteOpenHelper
 /**
  * @brief Class helps open data base.
  */
-class DBHelper(context: Context): SQLiteOpenHelper(context, dbName, null, dbVersion){
+class DBHelper(context: Context): SQLiteOpenHelper(context,
+    dbName, null,
+    dbVersion
+){
 
     override fun onCreate(db: SQLiteDatabase?) {
 

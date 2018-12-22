@@ -1,13 +1,17 @@
-package edu.pavel.courceproject
+package edu.pavel.courceproject.view
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ListView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
+import edu.pavel.courceproject.model.Film
+import edu.pavel.courceproject.model.FilmsTable
+import edu.pavel.courceproject.model.MyFilmsAdapter
+import edu.pavel.courceproject.R
+import kotlinx.coroutines.*
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import java.net.URL
 
 class MainActivity : AppCompatActivity() {
@@ -22,9 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         listData = this.findViewById(R.id.listData)
 
-        println("Start async")
-
-        async(CommonPool) {
+        GlobalScope.launch {
             filmsTable = FilmsTable(applicationContext)
 
             loadData(filmsTable)
@@ -36,15 +38,26 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 listData.adapter = adapter
             }
+            listData.setOnItemClickListener { parent, view, position, id ->
+                val film = adapter.getItem(position)
+
+                toast("Film is ${film.title}")
+
+                val detailIntent = FilmActivity.newIntent(this@MainActivity, film)
+                startActivity(detailIntent)
+            }
         }
 
-        println("End async")
+
     }
 
 //TODO: Add load data for other request.
 //TODO: Add detail activity for films.
 //TODO: Add feature for save data in local DB.
 
+    /**
+     * @brief Load data from server and populate them to DB.
+     */
     private fun loadData(filmsTable: FilmsTable) {
 //        TODO("For db add feature filling the db from loaded data")
 
@@ -60,15 +73,5 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun arrayTitle(films: List<Film>): List<String> {
-        val list = mutableListOf<String>()
-
-        for (film in films) {
-            list.add(film.title)
-        }
-
-        return list
-    }
-
-
 }
+
