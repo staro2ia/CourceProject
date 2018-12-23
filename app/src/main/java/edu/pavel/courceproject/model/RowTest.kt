@@ -31,9 +31,6 @@ data class Film(
     val url: String
 )
 
-//TODO: Make beautiful list row.
-//TODO: Add important field to row.
-
 /**
  * @brief Adapter for ListView of Film
  */
@@ -48,10 +45,7 @@ class MyFilmsAdapter(context: Context, list: List<Film>) : ArrayAdapter<Film>(co
 
         return view
     }
-
-
 }
-
 
 /**
  * @brief The class table of films.
@@ -125,9 +119,7 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
 //        cv.put(Columns.vehicles.string, film.vehicles)
         cv.put(Columns.url.string, film.url)
 
-
         return db.insert(tableName, null, cv)
-//        TODO ("not implemented")
     }
 
 //    fun update(x: Film): Int {
@@ -162,10 +154,10 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
         val producer = cursor.getString(Columns.producer.number)
         val release_date = cursor.getString(Columns.release_date.number)
         val rt_score = cursor.getString(Columns.rt_score.number)
-        val people = cursor.getString(Columns.people.number)
-        val species = cursor.getString(Columns.species.number)
-        val locations = cursor.getString(Columns.locations.number)
-        val vehicles = cursor.getString(Columns.locations.number)
+//        val people = cursor.getString(Columns.people.number)
+//        val species = cursor.getString(Columns.species.number)
+//        val locations = cursor.getString(Columns.locations.number)
+//        val vehicles = cursor.getString(Columns.locations.number)
         val url = cursor.getString(Columns.url.number)
 
         return Film(
@@ -190,10 +182,10 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
                 val producer = cursor.getString(Columns.producer.number)
                 val release_date = cursor.getString(Columns.release_date.number)
                 val rt_score = cursor.getString(Columns.rt_score.number)
-                val people = cursor.getString(Columns.people.number)
-                val species = cursor.getString(Columns.species.number)
-                val locations = cursor.getString(Columns.locations.number)
-                val vehicles = cursor.getString(Columns.locations.number)
+//                val people = cursor.getString(Columns.people.number)
+//                val species = cursor.getString(Columns.species.number)
+//                val locations = cursor.getString(Columns.locations.number)
+//                val vehicles = cursor.getString(Columns.locations.number)
                 val url = cursor.getString(Columns.url.number)
 
                 arr.add(
@@ -206,7 +198,6 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
             } while (cursor.moveToNext())
         }
         return arr
-//        TODO ("not implemented")
     }
 
 }

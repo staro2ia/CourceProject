@@ -5,12 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 
-//TODO: Add DB helper
-
-//TODO: Add films table helper
-
-
-
 /**
  * @brief Class helps open data base.
  */
@@ -20,7 +14,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context,
 ){
 
     override fun onCreate(db: SQLiteDatabase?) {
-
+//TODO: Make create table querys for other tables
         println("Start DBHelper::onCreate")
         val query = """
 CREATE TABLE IF NOT EXISTS 'Vehicles' (
@@ -63,7 +57,6 @@ CREATE TABLE IF NOT EXISTS '${FilmsTable.tableName}' (
         db?.execSQL(FilmsTable.queryCreateTable)
 
         println("End DBHelper::onCreate")
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -74,7 +67,7 @@ DROP TABLE IF EXISTS '${FilmsTable.tableName}'
         db?.execSQL(query)
         onCreate(db)
 
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO("Make update querys")
     }
 
     companion object {
