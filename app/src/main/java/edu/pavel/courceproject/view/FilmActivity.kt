@@ -3,17 +3,15 @@ package edu.pavel.courceproject.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import edu.pavel.courceproject.R
 import edu.pavel.courceproject.model.Film
 import edu.pavel.courceproject.model.FilmsTable
-
-import kotlinx.android.synthetic.main.activity_film.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 /**
  * @brief Class activity detail of film.
@@ -25,7 +23,7 @@ class FilmActivity : AppCompatActivity() {
         setContentView(R.layout.activity_film)
 //        setSupportActionBar(toolbar)
 
-        val id = intent.extras.getString(FilmsTable.Columns.id.string)?: return
+        val id = intent.extras?.getString(FilmsTable.Columns.id.string) ?: return
 
         var film: Film
         var filmsTable: FilmsTable
