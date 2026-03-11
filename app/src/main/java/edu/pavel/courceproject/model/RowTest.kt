@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import edu.pavel.courceproject.R
+import java.net.URL
 
 
 //@Serializable
@@ -100,6 +103,18 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
         db = dbHelper.writableDatabase
     }
 
+    /**
+     * @brief Load data from server and populate them to DB.
+     */
+    fun loadData(): Unit{
+        val apiResponse: String = URL("https://ghibliapi.vercel.app/films").readText()
+        val gson = Gson()
+        val films: List<Film> = gson.fromJson(apiResponse, object : TypeToken<List<Film>>() {}.type)
+
+        for (film in films) {
+            this.insert(film)
+        }
+    }
     fun insert(film: Film): Long {
         val cv = ContentValues()
         cv.put(Columns.id.string, film.id)
