@@ -1,17 +1,14 @@
 package edu.pavel.courceproject.view
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.ListView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import androidx.appcompat.app.AppCompatActivity
+import edu.pavel.courceproject.R
 import edu.pavel.courceproject.model.Film
 import edu.pavel.courceproject.model.FilmsTable
 import edu.pavel.courceproject.model.MyFilmsAdapter
-import edu.pavel.courceproject.R
-import kotlinx.coroutines.*
-import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.net.URL
 
 
@@ -45,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
             listData.setOnItemClickListener { _, _, position, _ ->
                 val film = adapter.getItem(position)
-                val detailIntent = FilmActivity.newIntent(this@MainActivity, film)
+                val detailIntent = FilmActivity.newIntent(this@MainActivity, film!!) // TODO: Исправить на нормально
                 startActivity(detailIntent)
             }
         }
