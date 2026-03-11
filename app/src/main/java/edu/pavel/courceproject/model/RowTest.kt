@@ -3,16 +3,12 @@ package edu.pavel.courceproject.model
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.support.annotation.RestrictTo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import edu.pavel.courceproject.R
-import org.jetbrains.anko.sdk27.coroutines.onClick
-//import kotlinx.serialization.*
-import java.util.ArrayList
 
 
 //@Serializable
