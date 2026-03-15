@@ -3,9 +3,11 @@ package edu.pavel.courceproject.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import edu.pavel.courceproject.R
 import edu.pavel.courceproject.model.Film
 import edu.pavel.courceproject.model.FilmsTable
@@ -21,7 +23,14 @@ class FilmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film)
-//        setSupportActionBar(toolbar)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = "Детали фильма" // Установить заголовок
+            setDisplayHomeAsUpEnabled(true) // Показать стрелку назад
+        }
 
         val id = intent.extras?.getString(FilmsTable.Columns.id.string) ?: return
 
@@ -34,8 +43,6 @@ class FilmActivity : AppCompatActivity() {
             film = filmsTable.select(id)
 
             runOnUiThread {
-                title = film.title
-
                 val textViewTitle = findViewById<TextView>(R.id.textViewTitle)
                 val textViewYear = findViewById<TextView>(R.id.textViewYear)
                 val textViewScore = findViewById<TextView>(R.id.textViewScore)
@@ -52,11 +59,20 @@ class FilmActivity : AppCompatActivity() {
                 textViewProducer.text = film.producer
                 textViewDescription.text = film.description
                 textViewURL.text = film.url
-
                 ratingBar.rating = film.rt_score.toFloat()
             }
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 
@@ -79,4 +95,4 @@ class FilmActivity : AppCompatActivity() {
         }
     }
 
-}
+} // class FilmActivity
