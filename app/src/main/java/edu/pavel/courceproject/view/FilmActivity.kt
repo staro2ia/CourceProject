@@ -4,16 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.RatingBar
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import edu.pavel.courceproject.R
+import androidx.lifecycle.lifecycleScope
+import edu.pavel.courceproject.databinding.ActivityFilmBinding
 import edu.pavel.courceproject.model.Film
 import edu.pavel.courceproject.model.FilmsTable
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+
+private lateinit var binding: ActivityFilmBinding
 
 /**
  * @brief Class activity detail of film.
@@ -22,10 +23,10 @@ class FilmActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_film)
+        binding = ActivityFilmBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
 
         supportActionBar?.apply {
             title = "Детали фильма" // Установить заголовок
@@ -34,37 +35,27 @@ class FilmActivity : AppCompatActivity() {
 
         val id = intent.extras?.getString(FilmsTable.Columns.id.string) ?: return
 
-        var film: Film
-        var filmsTable: FilmsTable
-
-        GlobalScope.launch {
-            filmsTable = FilmsTable(this@FilmActivity)
-
-            film = filmsTable.select(id)
-
-            runOnUiThread {
-                val textViewTitle = findViewById<TextView>(R.id.textViewTitle)
-                val textViewYear = findViewById<TextView>(R.id.textViewYear)
-                val textViewScore = findViewById<TextView>(R.id.textViewScore)
-                val textViewDirector = findViewById<TextView>(R.id.textViewDirector)
-                val textViewProducer = findViewById<TextView>(R.id.textViewProducer)
-                val textViewDescription = findViewById<TextView>(R.id.textViewDescription)
-                val textViewURL = findViewById<TextView>(R.id.textViewURL)
-                val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
-
-                textViewTitle.text = film.title
-                textViewYear.text = film.release_date
-                textViewScore.text = film.rt_score
-                textViewDirector.text = film.director
-                textViewProducer.text = film.producer
-                textViewDescription.text = film.description
-                textViewURL.text = film.url
-                ratingBar.rating = film.rt_score.toFloat()
+        lifecycleScope.launch {
+            val film = withContext(Dispatchers.IO) {
+                val filmsTable = FilmsTable(applicationContext)
+                filmsTable.select(id)
             }
-        }
 
+            val filmView = binding.include
+            filmView.textViewTitle.text = film.title
+            filmView.textViewYear.text = film.release_date
+            filmView.textViewScore.text = film.rt_score
+            filmView.textViewDirector.text = film.director
+            filmView.textViewProducer.text = film.producer
+            filmView.textViewDescription.text = film.description
+            filmView.textViewURL.text = film.url
+            filmView.ratingBar.rating = film.rt_score.toFloat()
+        }
     }
 
+    /**
+     * 
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             android.R.id.home -> {
@@ -77,7 +68,6 @@ class FilmActivity : AppCompatActivity() {
 
 
     companion object {
-
         /**
          * @brief
          *
