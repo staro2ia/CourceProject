@@ -15,7 +15,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context,
 
     override fun onCreate(db: SQLiteDatabase?) {
 //TODO: Make create table querys for other tables
-        println("Start DBHelper::onCreate")
         val query = """
 CREATE TABLE IF NOT EXISTS 'Vehicles' (
 	'ID'	TEXT NOT NULL UNIQUE,
@@ -34,7 +33,7 @@ CREATE TABLE IF NOT EXISTS 'Locations' (
 	PRIMARY KEY('ID')
 );
 CREATE TABLE IF NOT EXISTS '${FilmsTable.tableName}' (
-	'${FilmsTable.Columns.id.string}'	TEXT NOT NULL UNIQUE,
+	'${FilmsTable.Columns.id.string}'	TEXT PRIMARY KEY,
 	'${FilmsTable.Columns.title.string}'	TEXT NOT NULL,
 	'${FilmsTable.Columns.description.string}'	TEXT,
 	'${FilmsTable.Columns.director.string}'	TEXT NOT NULL,
@@ -56,7 +55,6 @@ CREATE TABLE IF NOT EXISTS '${FilmsTable.tableName}' (
 
         db?.execSQL(FilmsTable.queryCreateTable)
 
-        println("End DBHelper::onCreate")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

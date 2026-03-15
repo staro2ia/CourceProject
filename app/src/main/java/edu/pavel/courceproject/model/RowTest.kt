@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
     /**
      * @brief Load data from server and populate them to DB.
      */
-    fun loadData(): Unit{
+    fun loadData() {
         val apiResponse: String = URL("https://ghibliapi.vercel.app/films").readText()
         val gson = Gson()
         val films: List<Film> = gson.fromJson(apiResponse, object : TypeToken<List<Film>>() {}.type)
@@ -115,6 +115,7 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
             this.insert(film)
         }
     }
+
     fun insert(film: Film): Long {
         val cv = ContentValues()
         cv.put(Columns.id.string, film.id)
@@ -130,7 +131,7 @@ CREATE TABLE IF NOT EXISTS '$tableName' (
 //        cv.put(Columns.vehicles.string, film.vehicles)
         cv.put(Columns.url.string, film.url)
 
-        return db.insert(tableName, null, cv)
+        return db.insertWithOnConflict(tableName, null, cv, SQLiteDatabase.CONFLICT_REPLACE)
     }
 
 //    fun update(x: Film): Int {
