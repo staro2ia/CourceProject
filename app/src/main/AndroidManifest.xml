@@ -23,8 +23,7 @@
         </activity>
         <activity
             android:name="edu.pavel.courceproject.view.FilmActivity"
-            android:label="@string/title_activity_film"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/title_activity_film" >
         </activity>
     </application>
 
