@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-private lateinit var binding: ActivityFilmBinding
-
 /**
  * @brief Class activity detail of film.
  */
 class FilmActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityFilmBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ class FilmActivity : AppCompatActivity() {
     }
 
     /**
-     * 
+     *
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
