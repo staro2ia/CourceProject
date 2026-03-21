@@ -1,10 +1,10 @@
 package edu.pavel.courceproject.view
 
 import android.os.Bundle
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import edu.pavel.courceproject.R
+import edu.pavel.courceproject.databinding.ActivityMainBinding
 import edu.pavel.courceproject.model.FilmsTable
 import edu.pavel.courceproject.model.MyFilmsAdapter
 import kotlinx.coroutines.Dispatchers
@@ -17,14 +17,19 @@ import kotlinx.coroutines.withContext
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var listData: ListView
+    private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MyFilmsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        listData = this.findViewById(R.id.listData)
+        setSupportActionBar(binding.toolbar)
+
+        supportActionBar?.apply {
+            title = getString(R.string.app_name)
+        }
 
         lifecycleScope.launch {
             val filmsTable = FilmsTable(this@MainActivity)
@@ -35,9 +40,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             adapter = MyFilmsAdapter(applicationContext, films)
-            listData.adapter = adapter
+            binding.listData.adapter = adapter
 
-            listData.setOnItemClickListener { _, _, position, _ ->
+            binding.listData.setOnItemClickListener { _, _, position, _ ->
                 adapter.getItem(position)?.let { film ->
                     val detailIntent = FilmActivity.newIntent(this@MainActivity, film)
                     startActivity(detailIntent)
@@ -46,8 +51,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//TODO: Add load data for other request.
-//TODO: Add feature for save data in local DB.
-
-}
+} // class MainActivity
 
